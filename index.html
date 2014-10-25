@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Why Sass is «Awesome»?</title>
+    <link rel="stylesheet" href="presentation.css">
+  </head>
+  <body>
+    <textarea id="source">
+name: intro
+layout: true
+class: center, middle, inverse
+---
+#Why Sass is «awesome»
+.footnote[Syntactically Awesome Style Sheets]
+---
+layout: false
+name: myself  
+class: center, middle
+
+#Torleif Halseth
+**System Developer** @ **Knowit Reaktor Kyber**
+
+.image[![Umbraco CMS](images/umbracologo.png)]
+
+???
+- A year and a half
+---
+layout: false
+name: links
+class:
+
+#Useful links
+- [The Sass Way](http://thesassway.com/)
+- [Sass lang](http://sass-lang.com/)
+
+##Architecture
+- [Scalable and Modular Architecture for CSS](https://smacss.com/)
+- [BEM](http://bem.info/)
+- [OOCSS](https://github.com/stubbornella/oocss)
+
+##Libraries
+- [Bourbon](http://bourbon.io/)
+- [Neat](http://neat.bourbon.io/)
+???
+---
+
+name: ingress
+###[Variables](#variables)
+###[Nesting](#nesting)
+###[Partials & Imports](#partials)
+###[Mixins](#mixins)
+###[Extend/Inheritance](#extends)
+###[Operators](#operators)
+###[Lists](#lists)
+###[Maps](#maps)
+
+???
+- New functionality
+- This is what makes Sass awesome!
+- Dont exist in regular CSS
+- Anyone know Sass?
+---
+name: variables
+#Variables
+
+.left-column[
+#### SCSS
+```css
+$font:    Helvetica, sans-serif;
+$primary-color: #333;
+
+body {
+  font: 100% $font;
+  color: $primary-color;
+}
+```
+]
+.right-column[
+#### CSS
+```css
+body {
+  font: 100% Helvetica, sans-serif;
+  color: #333;
+}
+```
+]
+???
+- It is possible to store variables
+- When Sass is processed, it takes the variables we define for $font and $primary-color and outputs normal CSS with our value. 
+- Consistent use throughout the site.
+- Easy to maintain
+---
+
+name: nesting
+#Nesting
+
+.left-column[
+#### SCSS
+```scss
+nav {
+  ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  li { display: inline-block; }
+
+  a {
+    display: block;
+    padding: 6px 12px;
+    text-decoration: none;
+  }
+}
+```
+]
+.right-column[
+#### CSS
+```css
+nav ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+nav li {
+  display: inline-block;
+}
+
+nav a {
+  display: block;
+  padding: 6px 12px;
+  text-decoration: none;
+}
+```
+]
+???
+- Visual hierarchy like HTML.
+- Readable and pretty.
+- The inception rule
+- Never go more than three levels deep.
+- Keep a lokout on your CSS output.
+---
+
+name: partials
+#Partials & Imports
+
+```bash
+partials/
+  |-- _buttons.scss
+  |-- _footer.scss
+  |-- _icons.scss
+  |-- _menus.scss
+  |-- _typography.scss
+```
+```scss
+  @import 'partials/buttons',
+    'partials/footer',
+    'partials/icons',
+    'partials/menus',
+    'partials/typography';
+  
+```
+
+???
+- Great: modularize your CSS 
+- Eeasier to maintain
+---
+name: mixins
+#Mixins
+.left-column[
+##SCSS
+```scss
+@mixin border-radius($radius) {
+  -webkit-border-radius: $radius;
+     -moz-border-radius: $radius;
+      -ms-border-radius: $radius;
+          border-radius: $radius;
+}
+
+.box { @include border-radius(10px); }
+```
+]
+.right-column[
+##CSS
+```css
+.box {
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  border-radius: 10px;
+}
+```
+]
+
+???
+* Create reusable groups of css declarations
+* A good use of a mixin is for vendor prefixes.
+* Bourboun.io
+---
+name: extends
+#Extend/Inheritance
+
+.left-column[
+##SCSS
+```scss
+.message {
+  border: 1px solid #ccc;
+  padding: 10px;
+  color: #333;
+}
+
+.success {
+  @extend .message;
+  border-color: green;
+}
+
+.error {
+  @extend .message;
+  border-color: red;
+}
+
+.warning {
+  @extend .message;
+  border-color: yellow;
+}
+```
+]
+.right-column[
+##CSS
+```css
+.message, .success, .error, .warning {
+  border: 1px solid #cccccc;
+  padding: 10px;
+  color: #333;
+}
+
+.success {
+  border-color: green;
+}
+
+.error {
+  border-color: red;
+}
+
+.warning {
+  border-color: yellow;
+}
+```
+]
+???
+* Share a set of CSS properties from one selector to another
+* Placeholder --> % instead class.
+* Keep you Sass DRY (Prevent duplications).
+---
+
+name: operators
+#Operators
+.left-column[
+##SCSS
+```scss
+.container { width: 100%; }
+
+article[role="main"] {
+  float: left;
+  width: 600px / 960px * 100%;
+}
+
+aside[role="complimentary"] {
+  float: right;
+  width: 300px / 960px * 100%;
+}
+```
+]
+.right-column[
+##CSS
+```css
+.container {
+  width: 100%;
+}
+
+article[role="main"] {
+  float: left;
+  width: 62.5%;
+}
+
+aside[role="complimentary"] {
+  float: right;
+  width: 31.25%;
+}
+```
+]
+???
+- Doing math in your CSS
+- Create a fluid grid ( i % ) based on a 960 grid.
+- Bourbon Neat - Grid framework (Susy)
+---
+name: lists
+
+#Lists
+.left-column[
+##SCSS
+```scss
+$btn-color-pallete: (
+  default: #99d7eb,
+  success: #9FD5CA,
+  warning: #F4DBB2
+);
+@each $btn-variant, $btn-color in $btn-color-pallete {
+  .btn-#{$btn-variant} {
+    padding: 10px;
+    color: darken(($btn-color), 40%);
+    background-color: $btn-color;
+    border-color: darken($btn-color, 15%);
+  }
+}
+```
+<button class="btn-default">Default</button>
+<button class="btn-success">Danger</button>
+<button class="btn-warning">Success</button>
+]
+.right-column[
+##CSS
+```css
+.btn-default {
+  padding: 10px;
+  color: #1e7c9a;
+  background-color: #99d7eb;
+  border-color: #59bede;
+}
+
+.btn-success {
+  padding: 10px;
+  color: #337567;
+  background-color: #9FD5CA;
+  border-color: #6abead;
+}
+
+.btn-warning {
+  padding: 10px;
+  color: #bf811b;
+  background-color: #F4DBB2;
+  border-color: #eabc6f;
+}
+```
+]
+---
+name: maps
+#Maps
+.left-column[
+##SCSS
+```scss
+$heading-prefix: heading;
+$fonts: (
+  (h1, $heading-prefix, 40px),
+  (h2, $heading-prefix, 30px),
+  (h3, $heading-prefix, 25px)
+);
+
+@each $font in $fonts {
+  #{nth($font, 1)},
+  .#{nth($font, 1)}-#{nth($font, 2)} {
+    font-size: nth($font, 3);
+  }
+}
+```
+<div class="h1-heading">Heading 1</div>
+<div class="h2-heading">Heading 2</div>
+<div class="h3-heading">Heading 3</div>
+]
+.right-column[
+##CSS
+```css
+h1,
+.h1-heading {
+  font-size: 40px;
+}
+
+h2,
+.h2-heading {
+  font-size: 30px;
+}
+
+h3,
+.h3-heading {
+  font-size: 25px;
+}
+
+```
+]
+???
+-This is just scratching the surface of all the nifty features and functions in sass.
+---
+name: thanks
+class: center, middle, inverse
+#Have fun coding!
+    </textarea>
+    <script src="js/remark-latest.min.js"></script>
+    <script>
+      var hljs = remark.highlighter.js;
+      var slides = remark.create({
+        ratio: '16:9',
+        //ratio: '4:3',
+        highlightStyle: 'github'
+      });
+    </script>
+  </body>
+</html>
